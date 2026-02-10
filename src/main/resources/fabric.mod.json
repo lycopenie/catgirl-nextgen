@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "catgirl-nextgen",
+  "version": "${version}",
+  "name": "catgirl-nextgen",
+  "description": "shitty private client",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/catgirl-nextgen/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.lycopod.catgirlNextgen.client.CatgirlNextgenClient"
+    ],
+    "main":  [
+      "net.lycopod.catgirlNextgen.CatgirlNextgen"
+    ]
+  },
+  "mixins": [
+    "catgirl-nextgen.mixins.json",
+    {
+      "config": "catgirl-nextgen.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
