@@ -4,7 +4,9 @@
   "package": "net.lycopod.catgirlNextgen.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "KeyboardMixin"
+    "KeyboardMixin",
+    "MinecraftClientMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
