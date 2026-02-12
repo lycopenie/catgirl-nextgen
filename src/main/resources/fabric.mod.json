@@ -12,13 +12,9 @@
   "entrypoints": {
     "client": [
       "net.lycopod.catgirlNextgen.client.CatgirlNextgenClient"
-    ],
-    "main":  [
-      "net.lycopod.catgirlNextgen.CatgirlNextgen"
     ]
   },
   "mixins": [
-    "catgirl-nextgen.mixins.json",
     {
       "config": "catgirl-nextgen.client.mixins.json",
       "environment": "client"
