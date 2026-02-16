@@ -1,4 +1,4 @@
-package net.lycopod.catgirlNextgen.client.utils;
+package net.lycopod.catgirlNextgen.client.utils.render;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
@@ -9,10 +9,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
-import net.lycopod.catgirlNextgen.client.render.CatgirlRenderPipelines;
+import net.lycopod.catgirlNextgen.client.utils.color.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MappableRingBuffer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -20,19 +21,29 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-public class RenderUtils {
-    public static RenderUtils instance;
+public class RenderHandler {
+    public static RenderHandler instance;
     private static final ByteBufferBuilder allocator = new ByteBufferBuilder(RenderType.SMALL_BUFFER_SIZE);
     private BufferBuilder buffer;
 
-    public RenderUtils getInstance() {
+    public RenderHandler getInstance() {
         return instance;
     }
 
-    public void renderBox(WorldRenderContext context) {
+    public record VertexItem(
+            RenderPipeline pipeline,
+            Vector3f pos
+    ) {};
+
+    private final List<VertexItem> queue = new ArrayList<>();
+
+
+    public void renderWithPipeline(WorldRenderContext context, RenderPipeline renderPipeline ) {
         PoseStack matrices = context.matrices();
         Vec3 camera = context.worldState().cameraRenderState.pos;
 
@@ -42,52 +53,20 @@ public class RenderUtils {
         if (buffer == null) {
             buffer = new BufferBuilder(
                     allocator,
-                    CatgirlRenderPipelines.FILLED_THROUGH_WALLS.getVertexFormatMode(),
-                    CatgirlRenderPipelines.FILLED_THROUGH_WALLS.getVertexFormat()
+                    renderPipeline.getVertexFormatMode(),
+                    renderPipeline.getVertexFormat()
             );
         }
 
-        renderFilledBox(matrices.last().pose(), buffer, 0f, 60f, 0f, 1f, 101f, 1f, 0f, 1f, 0f, 0.5f);
+        Matrix4fc positionMatrix = matrices.last().pose();
+
+        RenderUtils.renderFilledBox(positionMatrix, buffer, new BlockPos(0, 64, 0), new ColorUtils.Color(0f, 1f, 0f, 0.5f));
+        RenderUtils.renderFilledBox(positionMatrix, buffer, new BlockPos(0, 62, 0), new ColorUtils.Color(0f, 1f, 0f, 0.5f));
 
         matrices.popPose();
-    }
 
-    private void renderFilledBox(Matrix4fc positionMatrix, BufferBuilder buffer, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float red, float green, float blue, float alpha) {
-        // Front Face
-        buffer.addVertex(positionMatrix, minX, minY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, minY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, maxY, maxZ).setColor(red, green, blue, alpha);
 
-        // Back face
-        buffer.addVertex(positionMatrix, maxX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, maxY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, minZ).setColor(red, green, blue, alpha);
-
-        // Left face
-        buffer.addVertex(positionMatrix, minX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, minY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, maxY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, maxY, minZ).setColor(red, green, blue, alpha);
-
-        // Right face
-        buffer.addVertex(positionMatrix, maxX, minY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, maxZ).setColor(red, green, blue, alpha);
-
-        // Top face
-        buffer.addVertex(positionMatrix, minX, maxY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, maxY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, maxY, minZ).setColor(red, green, blue, alpha);
-
-        // Bottom face
-        buffer.addVertex(positionMatrix, minX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, minY, minZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, maxX, minY, maxZ).setColor(red, green, blue, alpha);
-        buffer.addVertex(positionMatrix, minX, minY, maxZ).setColor(red, green, blue, alpha);
+        drawFilledThroughWalls(CatgirlNextgenClient.mc, renderPipeline);
     }
 
     private static final Vector4f COLOR_MODULATOR = new Vector4f(1f, 1f, 1f, 1f);
@@ -176,7 +155,6 @@ public class RenderUtils {
 
         builtBuffer.close();
     }
-
 
 
     public void close() {
