@@ -21,10 +21,10 @@ public class ColorUtils {
 
         public Color(int color) {
             this(
-                    (color >> 16 & 255) / 255.0f, // Red
-                    (color >> 8 & 255) / 255.0f,  // Green
-                    (color & 255) / 255.0f,       // Blue
-                    (color >> 24 & 255) / 255.0f  // Alpha
+                    (color >> 24 & 255) / 255.0f, // Red
+                    (color >> 16 & 255) / 255.0f,  // Green
+                    (color >> 6 & 255) / 255.0f,       // Blue
+                    (color & 255) / 255.0f  // Alpha
             );
         }
 
