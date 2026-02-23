@@ -3,6 +3,8 @@ package net.lycopod.catgirlNextgen.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.lycopod.catgirlNextgen.client.modules.ModuleManager;
+import net.lycopod.catgirlNextgen.client.ui.ClickGui;
 import net.lycopod.catgirlNextgen.client.utils.render.CatgirlRenderPipelines;
 import net.lycopod.catgirlNextgen.client.utils.render.RenderHandler;
 import net.minecraft.client.Minecraft;
@@ -21,7 +23,7 @@ public class CatgirlNextgenClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static Minecraft mc;
-
+    
     public static CatgirlNextgenClient getInstance() {
         return instance;
     }
@@ -32,9 +34,9 @@ public class CatgirlNextgenClient implements ClientModInitializer {
 
         instance = this;
         mc = Minecraft.getInstance();
-        renderHandlerInstance = new RenderHandler();
-
-        WorldRenderEvents.BEFORE_TRANSLUCENT.register(this::extractAndDrawWaypoint);
+//        renderHandlerInstance = new RenderHandler();
+//
+//        WorldRenderEvents.BEFORE_TRANSLUCENT.register(this::extractAndDrawWaypoint);
     }
 
     private void extractAndDrawWaypoint(WorldRenderContext context) {
@@ -42,13 +44,14 @@ public class CatgirlNextgenClient implements ClientModInitializer {
     }
 
     public void onKey(int action, KeyEvent input) {
-        LOGGER.info("pressed key:" + input.toString());
-        if (input.key() == GLFW.GLFW_KEY_O) {
+//        LOGGER.info("pressed key:" + input.toString());
+        if (input.key() == GLFW.GLFW_KEY_LEFT_SHIFT) {
+            mc.setScreen(ClickGui.INSTANCE);
         }
     }
 
     public void onTick() {
-
+        ModuleManager.INSTANCE.onTick();
     }
 
     public void onRender() {
