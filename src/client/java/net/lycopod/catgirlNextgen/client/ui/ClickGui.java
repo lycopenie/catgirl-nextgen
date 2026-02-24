@@ -14,6 +14,7 @@ public class ClickGui extends Screen {
 
     public static final ClickGui INSTANCE = new ClickGui();
 
+
     private ClickGui() {
         super(Component.literal("Click Gui"));
 
@@ -31,7 +32,7 @@ public class ClickGui extends Screen {
     public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
         for (Panel panel : panels) {
             panel.render(ctx, mouseX, mouseY, delta);
-            panel.update(mouseX, mouseY);
+            panel.updatePosition(mouseX, mouseY);
         }
 
         super.render(ctx, mouseX, mouseY, delta);

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Panel {
     public int x, y, width, height;
@@ -18,6 +19,7 @@ public class Panel {
     public boolean dragging;
     public boolean extended;
 
+    private ArrayList<ModuleWidget> moduleWidgets;
 
     protected Minecraft mc = Minecraft.getInstance();
     protected Font font = mc.font;
@@ -31,9 +33,11 @@ public class Panel {
         this.extended = false;
         this.category = category;
 
+        moduleWidgets = new ArrayList<>();
 
         int offset = height;
         for (Module m : ModuleManager.INSTANCE.getModulesInCategory(category)) {
+            moduleWidgets.add(new ModuleWidget(m, this, offset));
             offset += height;
         }
     }
@@ -43,11 +47,13 @@ public class Panel {
         context.drawString(font, category.name(), x + 2, y + 2, Color.WHITE.getRGB(), false);
 
         if (extended) {
-
+            for (ModuleWidget moduleWidget : moduleWidgets) {
+                moduleWidget.render(context, mouseX, mouseY, delta);
+            }
         }
     }
 
-    public void update(int mx, int my) {
+    public void updatePosition(int mx, int my) {
         if (dragging) {
             x = (int) (mx - dragX);
             y = (int) (my - dragY);
@@ -76,15 +82,38 @@ public class Panel {
                 extended = !extended;
             }
         }
+
+        for (ModuleWidget widget : moduleWidgets) {
+            widget.mouseClicked(mx, my, button);
+        }
     }
 
     public void mouseReleased(double mx, double my, int button) {
         if (button == 0) {
             dragging = false;
         }
+
+        for (ModuleWidget widget : moduleWidgets) {
+            widget.mouseReleased(mx, my, button);
+        }
     }
 
     public boolean isHovering(double mx, double my) {
         return x < mx && mx < x+width && y < my && my < y+height;
+    }
+
+    public void updateWidgets() {
+        int offset = height;
+
+        for (ModuleWidget widget : moduleWidgets) {
+            widget.offset = offset;
+            offset += height;
+
+//            if (widget.extended) {
+//                for (Component component: widget.components) {
+//                    if (component.setting.isVisible()) offset += height;
+//                }
+//            }
+        }
     }
 }
