@@ -6,11 +6,12 @@ import net.minecraft.client.gui.GuiGraphics;
 
 import java.awt.*;
 
-public class CheckboxComponent extends Component {
-    private BooleanSetting booleanSetting;
+import static net.lycopod.catgirlNextgen.client.CatgirlNextgenClient.LOGGER;
+
+public class CheckboxComponent extends Component<BooleanSetting> {
     public CheckboxComponent(BooleanSetting setting , ModuleWidget parent, int offset) {
         super(setting, parent, offset);
-        this.booleanSetting = setting;
+        this.setting = setting;
     }
 
     @Override
@@ -28,15 +29,15 @@ public class CheckboxComponent extends Component {
         } else {
             context.fill(left, top, right, bottom, new Color(0, 0, 0, 200).getRGB());
         }
-        context.drawString(font, (booleanSetting.isEnabled() ? "■" : "□"), left + 3, midCharYOffset, Color.WHITE.getRGB(), false); // TODO: change this for theme manager
-        context.drawString(font, booleanSetting.getName(), left + 11, midCharYOffset, Color.WHITE.getRGB(), false);
+        context.drawString(font, (setting.isEnabled() ? "■" : "□"), left + 3, midCharYOffset, Color.WHITE.getRGB(), false); // TODO: change this for theme manager
+        context.drawString(font, setting.getName(), left + 11, midCharYOffset, Color.WHITE.getRGB(), false);
         super.render(context, mx, my, delta);
     }
 
     @Override
     public void mouseClicked(double mouseX, double mouseY, int button) {
         if (isHovered(mouseX, mouseY) && button == 0)
-            booleanSetting.toggle();
+            setting.toggle();
 
         super.mouseClicked(mouseX, mouseY, button);
     }

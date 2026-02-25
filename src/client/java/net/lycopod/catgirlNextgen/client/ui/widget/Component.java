@@ -7,14 +7,14 @@ import net.minecraft.client.gui.GuiGraphics;
 
 import static net.lycopod.catgirlNextgen.client.CatgirlNextgenClient.mc;
 
-public class Component {
+public class Component<T extends Setting> {
     public ModuleWidget parent;
-    public Setting setting;
+    public T setting;
     public int offset;
 
     protected Font font = mc.font;
 
-    public Component(Setting setting, ModuleWidget parent, int offset) {
+    public Component(T setting, ModuleWidget parent, int offset) {
         this.parent = parent;
         this.setting = setting;
         this.offset = offset;

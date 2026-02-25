@@ -2,6 +2,10 @@ package net.lycopod.catgirlNextgen.client.ui;
 
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
 import net.lycopod.catgirlNextgen.client.modules.Module;
+import net.lycopod.catgirlNextgen.client.modules.settings.BooleanSetting;
+import net.lycopod.catgirlNextgen.client.modules.settings.NumberSetting;
+import net.lycopod.catgirlNextgen.client.modules.settings.Setting;
+import net.lycopod.catgirlNextgen.client.ui.widget.CheckboxComponent;
 import net.lycopod.catgirlNextgen.client.ui.widget.Component;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,6 +13,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.lycopod.catgirlNextgen.client.CatgirlNextgenClient.LOGGER;
 
 public class ModuleWidget {
     public Panel parent;
@@ -29,6 +35,16 @@ public class ModuleWidget {
         this.extended = false;
         this.components = new ArrayList<>();
 
+
+        int componentOffset = parent.height;
+        for (Setting setting : module.getSettings()) {
+            if (setting instanceof BooleanSetting) {
+                components.add(new CheckboxComponent((BooleanSetting) setting, this, componentOffset));
+            } else if (setting instanceof NumberSetting<?>) {
+                
+            }
+            componentOffset += parent.height;
+        }
     }
 
     public void render(GuiGraphics context, int mx, int my, float delta) {

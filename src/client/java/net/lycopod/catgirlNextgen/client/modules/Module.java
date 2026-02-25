@@ -1,8 +1,12 @@
 package net.lycopod.catgirlNextgen.client.modules;
 
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
+import net.lycopod.catgirlNextgen.client.modules.settings.Setting;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Module {
     private final String name;
@@ -10,10 +14,11 @@ public abstract class Module {
     private int key = GLFW.GLFW_KEY_UNKNOWN;
     private boolean enabled;
 
-    public Module(String name, Category category, int key) {
+    List<Setting> settings = new ArrayList<>();
+
+    public Module(String name, Category category) {
         this.name = name;
         this.category = category;
-        this.key = key;
     }
 
     public void toggle() {
@@ -50,6 +55,14 @@ public abstract class Module {
 
     public Category getCategory() {
         return category;
+    }
+
+    public void addSetting(Setting setting) {
+        settings.add(setting);
+    }
+
+    public List<Setting> getSettings() {
+        return settings;
     }
 
     public enum Category {

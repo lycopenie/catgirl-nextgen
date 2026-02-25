@@ -1,6 +1,7 @@
 package net.lycopod.catgirlNextgen.client.modules.combat;
 
 import net.lycopod.catgirlNextgen.client.modules.Module;
+import net.lycopod.catgirlNextgen.client.modules.settings.BooleanSetting;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,16 +12,16 @@ import static net.lycopod.catgirlNextgen.client.CatgirlNextgenClient.mc;
 
 public class TriggerBot extends Module {
     public TriggerBot() {
-        super("TriggerBot", Category.COMBAT, GLFW.GLFW_KEY_R);
+        super("TriggerBot", Category.COMBAT);
+        setKey(GLFW.GLFW_KEY_R);
+        addSetting(critHits);
+        addSetting(sprintHits);
+        addSetting(sweepHits);
     }
 
-    private boolean isSprintingServerSide() {
-        if (!mc.player.isSprinting()) {
-            return false;
-        }
-
-        return false;
-    }
+    public BooleanSetting critHits = new BooleanSetting("Critical hits", true);
+    public BooleanSetting sprintHits = new BooleanSetting("Sprint hits", true);
+    public BooleanSetting sweepHits = new BooleanSetting("Sweep Hits", false);
 
     private boolean canCriticalAttack() {
         return mc.player.fallDistance > 0.0
