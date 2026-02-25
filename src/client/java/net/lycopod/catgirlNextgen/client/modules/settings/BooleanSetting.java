@@ -3,10 +3,6 @@ package net.lycopod.catgirlNextgen.client.modules.settings;
 public class BooleanSetting extends Setting {
     private boolean value;
 
-    public boolean isValue() {
-        return value;
-    }
-
     public void setValue(boolean value) {
         this.value = value;
     }
@@ -18,5 +14,9 @@ public class BooleanSetting extends Setting {
     public BooleanSetting(String name, boolean value) {
         super(name);
         this.value = value;
+    }
+
+    public boolean isEnabled() {
+        return value;
     }
 }

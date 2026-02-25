@@ -42,7 +42,7 @@ public class TriggerBot extends Module {
             return;
         }
 
-        if (mc.player.getAttackStrengthScale(0.5f) <= 0.9) {
+        if (mc.player.getAttackStrengthScale(0.5f) < 1.0f) {
             return;
         }
 

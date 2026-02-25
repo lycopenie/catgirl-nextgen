@@ -6,4 +6,8 @@ public class Setting {
     public Setting(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
 }

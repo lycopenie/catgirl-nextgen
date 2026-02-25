@@ -45,7 +45,7 @@ public class CatgirlNextgenClient implements ClientModInitializer {
 
     public void onKey(int action, KeyEvent input) {
 //        LOGGER.info("pressed key:" + input.toString());
-        if (input.key() == GLFW.GLFW_KEY_LEFT_SHIFT) {
+        if (input.key() == GLFW.GLFW_KEY_RIGHT_SHIFT) {
             mc.setScreen(ClickGui.INSTANCE);
         }
     }

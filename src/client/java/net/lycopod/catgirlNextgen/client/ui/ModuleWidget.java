@@ -31,7 +31,7 @@ public class ModuleWidget {
 
     }
 
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mx, int my, float delta) {
         int left = parent.x;
         int top = parent.y + offset;
         int right = left + parent.width;
@@ -41,6 +41,12 @@ public class ModuleWidget {
 
         int midCharYOffset = (bottom+top)/2 - font.lineHeight/2;
         context.drawString(font, module.getName(), left + 2, midCharYOffset, module.isEnabled() ? Color.red.getRGB() : -1, false); // TODO: change this for theme manager
+
+        if (extended) {
+            for (Component component : components) {
+                component.render(context, mx, my, delta);
+            }
+        }
     }
 
     public void mouseClicked(double mx, double my, int button) {
@@ -52,9 +58,17 @@ public class ModuleWidget {
                 parent.updateWidgets();
             }
         }
+
+        for (Component component : components) {
+            component.mouseClicked(mx, my, button);
+        }
     }
 
     public void mouseReleased(double mx, double my, int button) {
+
+        for (Component component : components) {
+            component.mouseReleased(mx, my, button);
+        }
     }
 
 
