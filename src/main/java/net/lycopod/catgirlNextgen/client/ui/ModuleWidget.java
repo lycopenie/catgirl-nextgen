@@ -38,10 +38,10 @@ public class ModuleWidget {
 
         int componentOffset = parent.height;
         for (Setting setting : module.getSettings()) {
-            if (setting instanceof BooleanSetting) {
-                components.add(new CheckboxComponent((BooleanSetting) setting, this, componentOffset));
-            } else if (setting instanceof NumberSetting<?>) {
-                
+            if (setting instanceof BooleanSetting booleanSetting) {
+                components.add(new CheckboxComponent(booleanSetting, this, componentOffset));
+            } else if (setting instanceof NumberSetting) {
+//                components.add(new );
             }
             componentOffset += parent.height;
         }

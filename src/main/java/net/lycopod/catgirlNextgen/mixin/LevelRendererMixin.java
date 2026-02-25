@@ -1,4 +1,4 @@
-package net.lycopod.catgirlNextgen.mixin.client;
+package net.lycopod.catgirlNextgen.mixin;
 
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;

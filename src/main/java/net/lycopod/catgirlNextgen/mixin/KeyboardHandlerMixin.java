@@ -1,4 +1,4 @@
-package net.lycopod.catgirlNextgen.mixin.client;
+package net.lycopod.catgirlNextgen.mixin;
 
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
 import net.minecraft.client.KeyboardHandler;

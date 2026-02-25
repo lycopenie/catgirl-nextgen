@@ -16,7 +16,7 @@
   },
   "mixins": [
     {
-      "config": "catgirl-nextgen.client.mixins.json",
+      "config": "catgirl-nextgen.mixins.json",
       "environment": "client"
     }
   ],
