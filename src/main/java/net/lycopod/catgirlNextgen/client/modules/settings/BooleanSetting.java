@@ -16,6 +16,10 @@ public class BooleanSetting extends Setting {
         this.value = value;
     }
 
+    public boolean getValue() {
+        return value;
+    }
+
     public boolean isEnabled() {
         return value;
     }

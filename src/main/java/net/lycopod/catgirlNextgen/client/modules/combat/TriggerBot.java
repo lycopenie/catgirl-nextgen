@@ -1,5 +1,6 @@
 package net.lycopod.catgirlNextgen.client.modules.combat;
 
+import com.ibm.icu.text.RelativeDateTimeFormatter;
 import net.lycopod.catgirlNextgen.client.modules.Module;
 import net.lycopod.catgirlNextgen.client.modules.settings.BooleanSetting;
 import net.minecraft.world.InteractionHand;
@@ -30,24 +31,26 @@ public class TriggerBot extends Module {
                 && !mc.player.isInWater()
                 && !mc.player.isMobilityRestricted()
                 && !mc.player.isPassenger();
-//                && !mc.player.isSprinting();
+    }
+
+    private boolean canSprintAttack() {
+        return mc.player.onGround()
+                && mc.player.isSprinting();
     }
 
     @Override
     public void onTick() {
-        if (mc.player == null) {
-            return;
-        }
+        if (mc.player == null) return;
 
-        if (!(mc.hitResult instanceof EntityHitResult entityHitResult)) {
-            return;
-        }
+        if (!(mc.hitResult instanceof EntityHitResult entityHitResult)) return;
 
-        if (mc.player.getAttackStrengthScale(0.5f) < 1.0f) {
-            return;
-        }
+        if (mc.player.getAttackStrengthScale(0.5f) < 1.0f) return;
 
-        if (canCriticalAttack() || (mc.player.onGround() && mc.player.isSprinting())) {
+        if (mc.screen != null) return;
+
+        if (mc.player.isUsingItem()) return;
+
+        if ((canCriticalAttack() && critHits.getValue()) || (canSprintAttack() && sprintHits.getValue())) {
             Entity target = entityHitResult.getEntity();
 
             mc.gameMode.attack(mc.player, target);
