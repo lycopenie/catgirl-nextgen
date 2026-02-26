@@ -3,6 +3,7 @@ package net.lycopod.catgirlNextgen.client.modules.combat;
 import com.ibm.icu.text.RelativeDateTimeFormatter;
 import net.lycopod.catgirlNextgen.client.modules.Module;
 import net.lycopod.catgirlNextgen.client.modules.settings.BooleanSetting;
+import net.lycopod.catgirlNextgen.client.utils.PlayerUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +31,8 @@ public class TriggerBot extends Module {
                 && !mc.player.onClimbable()
                 && !mc.player.isInWater()
                 && !mc.player.isMobilityRestricted()
-                && !mc.player.isPassenger();
+                && !mc.player.isPassenger()
+                && !PlayerUtils.isSprintingServerSide;
     }
 
     private boolean canSprintAttack() {
@@ -56,5 +58,7 @@ public class TriggerBot extends Module {
             mc.gameMode.attack(mc.player, target);
             mc.player.swing(InteractionHand.MAIN_HAND);
         }
+
+
     }
 }

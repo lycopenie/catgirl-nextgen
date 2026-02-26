@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.lycopod.catgirlNextgen.client.modules.ModuleManager;
 import net.lycopod.catgirlNextgen.client.ui.ClickGui;
+import net.lycopod.catgirlNextgen.client.utils.PlayerUtils;
 import net.lycopod.catgirlNextgen.client.utils.render.CatgirlRenderPipelines;
 import net.lycopod.catgirlNextgen.client.utils.render.RenderHandler;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,9 @@ public class CatgirlNextgenClient implements ClientModInitializer {
 
         instance = this;
         mc = Minecraft.getInstance();
+
+        PlayerUtils.init();
+
 //        renderHandlerInstance = new RenderHandler();
 //
 //        WorldRenderEvents.BEFORE_TRANSLUCENT.register(this::extractAndDrawWaypoint);
@@ -51,6 +55,10 @@ public class CatgirlNextgenClient implements ClientModInitializer {
     }
 
     public void onTick() {
+        if (mc.player != null) {
+            PlayerUtils.INSTANCE.onTick();
+        }
+
         ModuleManager.INSTANCE.onTick();
     }
 
