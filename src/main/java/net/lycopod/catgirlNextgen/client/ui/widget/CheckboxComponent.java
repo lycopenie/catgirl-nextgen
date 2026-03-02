@@ -9,7 +9,7 @@ import java.awt.*;
 import static net.lycopod.catgirlNextgen.client.CatgirlNextgenClient.LOGGER;
 
 public class CheckboxComponent extends Component<BooleanSetting> {
-    public CheckboxComponent(BooleanSetting setting , ModuleWidget parent, int offset) {
+    public CheckboxComponent(BooleanSetting setting, ModuleWidget parent, int offset) {
         super(setting, parent, offset);
         this.setting = setting;
     }
@@ -22,12 +22,12 @@ public class CheckboxComponent extends Component<BooleanSetting> {
         int bottom = top + parent.parent.height;
 
         int charHeight = font.lineHeight;
-        int midCharYOffset = (bottom+top)/2 - charHeight/2;
+        int midCharYOffset = (bottom + top) / 2 - charHeight / 2;
 
         if (!isHovered(mx, my)) {
-            context.fill(left, top, right, bottom, new Color(0, 0, 0, 120).getRGB());
+            context.fill(left, top, right, bottom, new Color(0, 0, 0, 120).getRGB()); // TODO: change this for theme manager
         } else {
-            context.fill(left, top, right, bottom, new Color(0, 0, 0, 200).getRGB());
+            context.fill(left, top, right, bottom, new Color(0, 0, 0, 200).getRGB()); // TODO: change this for theme manager
         }
         context.drawString(font, (setting.isEnabled() ? "■" : "□"), left + 3, midCharYOffset, Color.WHITE.getRGB(), false); // TODO: change this for theme manager
         context.drawString(font, setting.getName(), left + 11, midCharYOffset, Color.WHITE.getRGB(), false);

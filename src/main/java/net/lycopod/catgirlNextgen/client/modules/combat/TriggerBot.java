@@ -1,12 +1,10 @@
 package net.lycopod.catgirlNextgen.client.modules.combat;
 
-import com.ibm.icu.text.RelativeDateTimeFormatter;
 import net.lycopod.catgirlNextgen.client.modules.Module;
 import net.lycopod.catgirlNextgen.client.modules.settings.BooleanSetting;
 import net.lycopod.catgirlNextgen.client.utils.PlayerUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.EntityHitResult;
 import org.lwjgl.glfw.GLFW;
 
@@ -25,24 +23,14 @@ public class TriggerBot extends Module {
     public BooleanSetting sprintHits = new BooleanSetting("Sprint hits", true);
     public BooleanSetting sweepHits = new BooleanSetting("Sweep Hits", false);
 
-    private boolean canCriticalAttack() {
-        return mc.player.fallDistance > 0.0
-                && !mc.player.onGround()
-                && !mc.player.onClimbable()
-                && !mc.player.isInWater()
-                && !mc.player.isMobilityRestricted()
-                && !mc.player.isPassenger()
-                && !PlayerUtils.isSprintingServerSide;
-    }
-
     private boolean canSprintAttack() {
         return mc.player.onGround()
-                && mc.player.isSprinting();
+                && PlayerUtils.isSprintingServerSide;
     }
 
     @Override
     public void onTick() {
-        if (mc.player == null) return;
+        assert mc.player != null;
 
         if (!(mc.hitResult instanceof EntityHitResult entityHitResult)) return;
 
@@ -52,13 +40,11 @@ public class TriggerBot extends Module {
 
         if (mc.player.isUsingItem()) return;
 
-        if ((canCriticalAttack() && critHits.getValue()) || (canSprintAttack() && sprintHits.getValue())) {
+        if ((PlayerUtils.canCriticalAttack() && critHits.getValue()) || (canSprintAttack() && sprintHits.getValue())) {
             Entity target = entityHitResult.getEntity();
 
             mc.gameMode.attack(mc.player, target);
             mc.player.swing(InteractionHand.MAIN_HAND);
         }
-
-
     }
 }

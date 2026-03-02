@@ -29,7 +29,7 @@ public class PlayerUtils {
 //        LOGGER.info(String.valueOf(isSprintingServerSide));
     }
 
-    private boolean canCriticalAttack() {
+    public static boolean canCriticalAttack() {
         return mc.player.fallDistance > 0.0
                 && !mc.player.onGround()
                 && !mc.player.onClimbable()

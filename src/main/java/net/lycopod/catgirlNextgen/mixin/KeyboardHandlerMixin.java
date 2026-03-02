@@ -13,6 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class KeyboardHandlerMixin {
     @Inject(method = "keyPress", at = @At("HEAD"))
     private void keyPress(long l, int action, KeyEvent keyEvent, CallbackInfo ci) {
-        CatgirlNextgenClient.getInstance().onKey(action, keyEvent);
+        CatgirlNextgenClient.INSTANCE.onKey(action, keyEvent);
     }
 }

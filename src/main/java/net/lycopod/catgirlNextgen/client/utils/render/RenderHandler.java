@@ -9,11 +9,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
-import net.lycopod.catgirlNextgen.client.utils.color.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MappableRingBuffer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -27,13 +25,9 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 public class RenderHandler {
-    public static RenderHandler instance;
-    private static final ByteBufferBuilder allocator = new ByteBufferBuilder(RenderType.SMALL_BUFFER_SIZE);
+    public static RenderHandler INSTANCE = new RenderHandler();
+    private final ByteBufferBuilder allocator = new ByteBufferBuilder(RenderType.SMALL_BUFFER_SIZE);
     private BufferBuilder buffer;
-
-    public RenderHandler getInstance() {
-        return instance;
-    }
 
     public record VertexItem(
             RenderPipeline pipeline,
@@ -43,7 +37,8 @@ public class RenderHandler {
     private final List<VertexItem> queue = new ArrayList<>();
 
 
-    public void renderWithPipeline(WorldRenderContext context, RenderPipeline renderPipeline ) {
+
+    public void renderBoxWithPipeline(WorldRenderContext context, RenderPipeline renderPipeline) {
         PoseStack matrices = context.matrices();
         Vec3 camera = context.worldState().cameraRenderState.pos;
 
@@ -60,22 +55,19 @@ public class RenderHandler {
 
         Matrix4fc positionMatrix = matrices.last().pose();
 
-        RenderUtils.renderFilledBox(positionMatrix, buffer, new BlockPos(0, 64, 0), new ColorUtils.Color(0f, 1f, 0f, 0.5f));
-        RenderUtils.renderFilledBox(positionMatrix, buffer, new BlockPos(0, 62, 0), new ColorUtils.Color(0f, 1f, 0f, 0.5f));
+        RenderUtils.renderFilledBoxes(positionMatrix, buffer);
 
         matrices.popPose();
-
-
-        drawFilledThroughWalls(CatgirlNextgenClient.mc, renderPipeline);
+        drawWithPipeline(CatgirlNextgenClient.mc, renderPipeline);
     }
 
-    private static final Vector4f COLOR_MODULATOR = new Vector4f(1f, 1f, 1f, 1f);
-    private static final Vector3f MODEL_OFFSET = new Vector3f();
-    private static final Matrix4f TEXTURE_MATRIX = new Matrix4f();
+    private final Vector4f COLOR_MODULATOR = new Vector4f(1f, 1f, 1f, 1f);
+    private final Vector3f MODEL_OFFSET = new Vector3f();
+    private final Matrix4f TEXTURE_MATRIX = new Matrix4f();
     private MappableRingBuffer vertexBuffer;
 
 
-    public void drawFilledThroughWalls(Minecraft client, @SuppressWarnings("SameParameterValue") RenderPipeline pipeline) {
+    public void drawWithPipeline(Minecraft client, @SuppressWarnings("SameParameterValue") RenderPipeline pipeline) {
         // Build the buffer
         MeshData builtBuffer = buffer.buildOrThrow();
         MeshData.DrawState drawParameters = builtBuffer.drawState();
@@ -113,7 +105,7 @@ public class RenderHandler {
         return vertexBuffer.currentBuffer();
     }
 
-    private static void draw(Minecraft client, RenderPipeline pipeline, MeshData builtBuffer, MeshData.DrawState drawParameters, GpuBuffer vertices, VertexFormat format) {
+    private void draw(Minecraft client, RenderPipeline pipeline, MeshData builtBuffer, MeshData.DrawState drawParameters, GpuBuffer vertices, VertexFormat format) {
         GpuBuffer indices;
         VertexFormat.IndexType indexType;
 

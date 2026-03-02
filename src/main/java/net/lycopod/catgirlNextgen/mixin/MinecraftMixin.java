@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftMixin {
     @Inject(method = "runTick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
-        CatgirlNextgenClient.getInstance().onTick();
+        CatgirlNextgenClient.INSTANCE.onTick();
     }
 }

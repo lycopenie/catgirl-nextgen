@@ -22,7 +22,7 @@ public class ClickGui extends Screen {
 
         int i = 0;
         for (Module.Category category : Module.Category.values()) {
-            panels.add(new Panel(category, 20 + i*60, 20, 60, 12));
+            panels.add(new Panel(category, 20 + i * 60, 20, 60, 12));
             i += 1;
         }
     }
@@ -55,7 +55,6 @@ public class ClickGui extends Screen {
 
         return super.mouseReleased(event);
     }
-
 
 
 }

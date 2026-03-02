@@ -1,5 +1,6 @@
 package net.lycopod.catgirlNextgen.client.modules;
 
+import net.lycopod.catgirlNextgen.client.modules.combat.CartPlacer;
 import net.lycopod.catgirlNextgen.client.modules.combat.TriggerBot;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class ModuleManager {
 
     public ModuleManager() {
         modules.add(new TriggerBot());
+        modules.add(new CartPlacer());
     }
 
 

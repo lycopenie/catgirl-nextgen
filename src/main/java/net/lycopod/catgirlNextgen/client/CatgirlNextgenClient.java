@@ -8,44 +8,40 @@ import net.lycopod.catgirlNextgen.client.ui.ClickGui;
 import net.lycopod.catgirlNextgen.client.utils.PlayerUtils;
 import net.lycopod.catgirlNextgen.client.utils.render.CatgirlRenderPipelines;
 import net.lycopod.catgirlNextgen.client.utils.render.RenderHandler;
+import net.lycopod.catgirlNextgen.client.utils.render.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
+
 
 
 public class CatgirlNextgenClient implements ClientModInitializer {
-    public static CatgirlNextgenClient instance;
-    public static RenderHandler renderHandlerInstance;
+    public static final CatgirlNextgenClient INSTANCE = new CatgirlNextgenClient();
 
     public static final String MOD_ID = "catgirl-nextgen";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static Minecraft mc;
-    
-    public static CatgirlNextgenClient getInstance() {
-        return instance;
-    }
+    public static final Minecraft mc = Minecraft.getInstance();
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("init message");
-
-        instance = this;
-        mc = Minecraft.getInstance();
-
+        LOGGER.info("#catgirlexploit");
         PlayerUtils.init();
 
-//        renderHandlerInstance = new RenderHandler();
-//
-//        WorldRenderEvents.BEFORE_TRANSLUCENT.register(this::extractAndDrawWaypoint);
+        WorldRenderEvents.BEFORE_TRANSLUCENT.register(this::extractAndDrawBox);
+        RenderUtils.addFilledBox(new BlockPos(0, 64, 0), new Color(0f, 0f, 0f, 0.5f));
     }
 
-    private void extractAndDrawWaypoint(WorldRenderContext context) {
-        renderHandlerInstance.renderWithPipeline(context, CatgirlRenderPipelines.ESP_BOX);
+    public void extractAndDrawBox(WorldRenderContext context) {
+        RenderHandler.INSTANCE.renderBoxWithPipeline(context, CatgirlRenderPipelines.ESP_BOX);
     }
+
 
     public void onKey(int action, KeyEvent input) {
 //        LOGGER.info("pressed key:" + input.toString());

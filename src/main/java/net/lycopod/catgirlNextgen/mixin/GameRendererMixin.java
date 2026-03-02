@@ -1,6 +1,7 @@
 package net.lycopod.catgirlNextgen.mixin;
 
 import net.lycopod.catgirlNextgen.client.CatgirlNextgenClient;
+import net.lycopod.catgirlNextgen.client.utils.render.RenderHandler;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class GameRendererMixin {
     @Inject(method = "close", at = @At("TAIL"))
     private void close(CallbackInfo ci) {
-        CatgirlNextgenClient.renderHandlerInstance.close();
+        RenderHandler.INSTANCE.close();
     }
 }
