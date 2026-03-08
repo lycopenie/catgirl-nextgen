@@ -19,6 +19,7 @@ public class SliderComponent extends Component<NumberSetting<?>> {
         int charHeight = font.lineHeight;
         int midCharYOffset = (bottom + top) / 2 - charHeight / 2;
 
+//        double
 
         super.render(context, mx, my, delta);
     }

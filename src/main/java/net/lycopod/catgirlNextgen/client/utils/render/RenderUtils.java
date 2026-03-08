@@ -77,7 +77,6 @@ public class RenderUtils {
 
 
     public static void renderFilledBox(Matrix4fc positionMatrix, BufferBuilder buffer, AABB box, Color color) {
-        LOGGER.info(String.valueOf(box));
         renderFilledBox(positionMatrix, buffer, (float) box.minX, (float) box.minY, (float) box.minZ, (float) box.maxX, (float) box.maxY, (float) box.maxZ, color);
     }
 

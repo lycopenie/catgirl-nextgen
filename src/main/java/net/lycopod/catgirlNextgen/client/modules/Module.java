@@ -66,6 +66,6 @@ public abstract class Module {
     }
 
     public enum Category {
-        COMBAT, MOVEMENT, RENDER, MISC
+        COMBAT, MOVEMENT, RENDER, MISC, PLAYER
     }
 }

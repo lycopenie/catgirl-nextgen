@@ -2,11 +2,11 @@ package net.lycopod.catgirlNextgen.client.modules;
 
 import net.lycopod.catgirlNextgen.client.modules.combat.CartPlacer;
 import net.lycopod.catgirlNextgen.client.modules.combat.TriggerBot;
+import net.lycopod.catgirlNextgen.client.modules.player.AutoTotem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
+
 
 public class ModuleManager {
     public static final ModuleManager INSTANCE = new ModuleManager();
@@ -16,6 +16,7 @@ public class ModuleManager {
     public ModuleManager() {
         modules.add(new TriggerBot());
         modules.add(new CartPlacer());
+        modules.add(new AutoTotem());
     }
 
 
