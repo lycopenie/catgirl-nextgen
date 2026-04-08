@@ -1,3 +1,6 @@
+# archived in favor of new client (mojang is changing rendering soon). Waiting for update.
+
+
 ### fucked-up code in here don't read
 request features/access via discord
 
